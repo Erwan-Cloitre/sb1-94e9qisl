@@ -50,9 +50,8 @@ export const processEmails = (
   }
 
   const stats: ProcessingStats = {
-    totalEmails: 0,
-    duplicatesRemoved: 0,
-    invalidEmails: 0
+    totalEmails: existingRecords.length,
+    duplicatesRemoved: 0
   };
 
   // Première passe : créer les records et identifier les emails invalides
@@ -62,7 +61,6 @@ export const processEmails = (
       const email = row[emailColumnIndex]?.toString().trim().toLowerCase();
       
       if (!email) {
-        stats.invalidEmails++;
         return {
           email: '',
           isValid: false,
@@ -72,7 +70,6 @@ export const processEmails = (
       }
 
       const isValid = validate(email);
-      if (!isValid) stats.invalidEmails++;
       
       return {
         email,
@@ -82,12 +79,6 @@ export const processEmails = (
       };
     })
     .filter(record => record.email !== '');
-
-  stats.totalEmails = records.length;
-
-  if (stats.totalEmails === 0) {
-    throw new Error('Aucun email trouvé dans le fichier');
-  }
 
   // Supprimer les emails invalides si l'option est activée
   if (options.removeInvalid) {
@@ -135,6 +126,8 @@ export const processEmails = (
   if (options.sortAlphabetically) {
     records.sort((a, b) => a.email.localeCompare(b.email));
   }
+
+  stats.totalEmails = records.length;
 
   return { records, stats };
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, AlertTriangle, Copy } from 'lucide-react';
+import { FileText, AlertTriangle } from 'lucide-react';
 import type { ProcessingStats } from '../types';
 
 interface StatsPanelProps {
@@ -14,7 +14,7 @@ export function StatsPanel({ stats }: StatsPanelProps) {
         Résumé du traitement
       </h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-blue-50 p-4 rounded-lg">
           <div className="text-blue-600 text-sm font-medium">Total des emails</div>
           <div className="text-2xl font-bold text-blue-700">{stats.totalEmails}</div>
@@ -26,27 +26,17 @@ export function StatsPanel({ stats }: StatsPanelProps) {
             {stats.duplicatesRemoved}
           </div>
         </div>
-
-        <div className="bg-red-50 p-4 rounded-lg">
-          <div className="text-red-600 text-sm font-medium">Emails invalides</div>
-          <div className="text-2xl font-bold text-red-700">{stats.invalidEmails}</div>
-        </div>
       </div>
 
-      {(stats.duplicatesRemoved > 0 || stats.invalidEmails > 0) && (
+      {stats.duplicatesRemoved > 0 && (
         <div className="mt-4 p-4 bg-yellow-50 rounded-lg flex items-start gap-3">
           <AlertTriangle className="text-yellow-600 flex-shrink-0 mt-1" size={20} />
           <div className="text-sm text-yellow-700">
             <p className="font-medium mb-1">Attention</p>
             <ul className="list-disc list-inside space-y-1">
-              {stats.duplicatesRemoved > 0 && (
-                <li>
-                  {stats.duplicatesRemoved} email(s) en double ont été identifiés
-                </li>
-              )}
-              {stats.invalidEmails > 0 && (
-                <li>{stats.invalidEmails} email(s) invalides détectés</li>
-              )}
+              <li>
+                {stats.duplicatesRemoved} email(s) en double ont été identifiés
+              </li>
             </ul>
           </div>
         </div>

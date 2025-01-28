@@ -8,7 +8,6 @@ export interface EmailRecord {
 export interface ProcessingStats {
   totalEmails: number;
   duplicatesRemoved: number;
-  invalidEmails: number;
 }
 
 export interface ProcessingOptions {
